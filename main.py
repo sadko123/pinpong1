@@ -57,6 +57,9 @@ roc2_start_y = window_hight / 2
 ball_start_x = 350
 ball_start_y = 250
 
+speed_ball_x = 3
+speed_ball_y = 3
+
 window = display.set_mode((700, 500))
 
 #FPS
@@ -105,9 +108,18 @@ while run:
         ball.update()
         
         window.blit(background, (0,0))
-
         
+        ball.rect.x += speed_ball_x
+        ball.rect.y += speed_ball_y
 
+        if ball.rect.y > window_hight - ball_hight or ball.rect.y < 0:
+            speed_ball_y *= -1
+
+        if sprite.collide_rect(ball, roc1):
+            speed_ball_x *= -1
+
+        if sprite.collide_rect(ball, roc2):
+            speed_ball_x *= -1
 
         roc1.reset()
         roc2.reset()
