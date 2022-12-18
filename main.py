@@ -86,6 +86,12 @@ font2 = font.Font (None, 40)
 win1 = font2.render('Первый игрок выиграл' , True , (255, 215,0))
 win2 = font2.render('Второй игрок выиграл' , True , (255, 215,0))
 
+a1 = 0
+a2 = 0
+
+win_text = font1.render('Игрок 1: ' + str(a1), 1 , (255, 215,0))
+win_text2 = font1.render('Игрок 2: ' + str(a2), 1 , (255, 215,0))
+
 #спрайты
 
 roc1 = Player(roc1_image, roc1_start_x, roc1_start_y, (roc1_wight, roc1_hight), 10 )
@@ -109,11 +115,34 @@ while run:
         
         window.blit(background, (0,0))
         
+        window.blit(win_text, (10, 30))
+        window.blit(win_text2, (550, 30))
+
         ball.rect.x += speed_ball_x
         ball.rect.y += speed_ball_y
 
         if ball.rect.y > window_hight - ball_hight or ball.rect.y < 0:
             speed_ball_y *= -1
+        
+        if ball.rect.x > window_widht - ball_wight:
+            speed_ball_x *= -1
+            a1 += 1
+            win_text = font1.render('Игрок 1: ' + str(a1), 1 , (255, 215,0))
+            finish = False
+        
+        if ball.rect.x < 0:
+            speed_ball_x *= -1
+            a2 += 1
+            win_text2 = font1.render('Игрок 2: ' + str(a2), 1 , (255, 215,0))
+            finish = False
+
+        if a1 == 2:
+            window.blit(win1, (250, 350))
+            finish = True
+        
+        if a2 == 2:
+            window.blit(win2, (250, 350))
+            finish = True
 
         if sprite.collide_rect(ball, roc1):
             speed_ball_x *= -1
